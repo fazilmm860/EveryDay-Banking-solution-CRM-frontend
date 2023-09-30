@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import axios from 'axios';
 import ResidenceAddressForm from './ResidenceAddressForm';
@@ -235,19 +235,7 @@ const FormDatas = () => {
     }
   };
   
-  const handleDateOfBirthChange = (dob) => {
-    try {
-      const selectedDate = new Date(dob);
-      const formattedDate = selectedDate.toLocaleDateString();
-      console.log("Selected Date of Birth:", selectedDate);
-      setFormData({
-        ...formData,
-        dateOfBirth: formattedDate,
-      });
-    } catch (error) {
-      console.error("Error in handleDateOfBirthChange:", error);
-    }
-  };
+ 
  
   const handleEmploymentTypeChange = (event) => {
     const newEmploymentType = event.target.value;
@@ -888,7 +876,7 @@ const handleSubmit=async (event)=>{
                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         
                           <input
-                            type="text"
+                            type="number"
                             name="mobileNumber"
                             id="mobileNumber"
                             value={formData.mobileNumber}
@@ -910,7 +898,7 @@ const handleSubmit=async (event)=>{
                         <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         
                           <input
-                            type="text"
+                            type="number"
                             name="altMobileNumber"
                             id="altMobileNumber"
                             value={formData.altMobileNumber}
