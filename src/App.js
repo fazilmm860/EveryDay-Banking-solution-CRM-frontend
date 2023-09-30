@@ -16,6 +16,7 @@ import { Box, CircularProgress } from '@mui/material';
 import AdminPage from './components/AdminPage';
 import ViewPage from './components/viewPage/ViewPage';
 import RegistrationLink from './components/loginPage/Registration';
+import SuccessBox from './components/Forms/SuccessBox';
 
 
 function App() {
@@ -71,7 +72,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/password-reset" element={<PasswordReset />} />
-              <Route path="/forgotpassword/:id/:token" element={<ForgotPassword />} />
+              <Route path="/forgotpassword/:id/:token" element={<ForgotPassword />} />              
               <Route path="*" element={<Error />} />
 
             </Routes>

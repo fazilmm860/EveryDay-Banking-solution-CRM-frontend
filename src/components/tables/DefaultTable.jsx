@@ -10,7 +10,7 @@ import ViewPage from "../viewPage/ViewPage";
 
 
 
-const TABLE_HEAD = ["date", "Exe Name", "DseCode", "Select Card","Surrogate" ,"First Name","Middle Name", "Last Name","DOB","Gender","Marital State",
+const TABLE_HEAD = ["date","Application Number" ,"Exe Name", "DseCode", "Select Card","Surrogate" ,"First Name","Middle Name", "Last Name","DOB","Gender","Marital State",
 "Spouse Name","Qualification","Other","Pan Number","Mobile Number","Alt.Mobile Number","Email","Residence.Flat","Residence.Street",
 "Residence.City","Residence.state","Residence.Landmark","Residence.Pincode","Permanent.Flat","Permanent.Street","Permanent.City","Permanent.State","Permanent.Landmark",
 "Permanent.Pincode","Period at current Residence","Residence is","Company Name","Company.Flat","Company.Street","Company.City","Company.State","Company.LandMark","Company.PinCode",
@@ -182,6 +182,15 @@ return (
                         className="font-normal"
                     >
                         {item.date}
+                    </Typography>
+                </td>
+                <td className={classes}>
+                    <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                    >
+                        {item.applicationNumber}
                     </Typography>
                 </td>
                 <td className={classes}>

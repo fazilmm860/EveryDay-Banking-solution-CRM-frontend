@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import axios from 'axios';
 import ResidenceAddressForm from './ResidenceAddressForm';
@@ -154,9 +154,10 @@ const self=[
 
 const FormDatas = () => {
   
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formData,setFormData]=useState({
     date: new Date().toLocaleDateString(),
+    applicationNumber:``,
     exeName: '',
     dseCode: '',
     cardSelect: '',
@@ -216,6 +217,9 @@ const FormDatas = () => {
     otherAcc: '',
     remark: ''
   })
+
+
+
 
   const handleDateChanged = (dates) => {
     try {
@@ -290,7 +294,7 @@ setFormData((prevData)=>({
 }
 
 const handleSubmit=async (event)=>{
-  
+  let applicationNumber;
   try{
       event.preventDefault();// prevent the default form submmision
 
@@ -299,7 +303,7 @@ const handleSubmit=async (event)=>{
       toast.warning('Please enter the executive name',{
         position:'top-center'
       })
-    }else if(formData.dseCode===''){
+    }else if(formData.dseCode===''){       //
       toast.warning('Please enter the  DSE-Code',{
         position:'top-center'
       })
@@ -434,23 +438,29 @@ const handleSubmit=async (event)=>{
       if (formData.sameAsAbove) {
         formDataToSend = {
           ...formDataToSend,
-          permanentAddress: formData.residenceAddress,
+          permanentAddress: formData.residenceAddress, 
         };
       }
       
-         
-          
-          const response=await axios.post(`http://localhost:8000/api/sendData`,formDataToSend)
-          console.log('formDataToSend:', formDataToSend);
+      const response = await axios.post(`http://localhost:8000/api/sendData`, formDataToSend)
+      // const { applicationNumber } = response.data;
+      // alert(`Application Number: ${applicationNumber}`);
+      applicationNumber = response.data.applicationNumber; // Assign the value here
+    alert(`Application Number: ${applicationNumber}`);
+      
+     
           if(response.status===201){
-            const shouldSave = window.confirm('Are you sure you want to save the data and send this to mirshad?'); // Confirmation prompt
-            
-            if (shouldSave) {
+              
+           
+           
+          
             console.log(`Data submitted succesfully `);
-  
+          
+           
+            setShowSuccessModal(true);
             setFormData({
               date: new Date().toLocaleDateString(),
-              exeName: '',
+              exeName: '', 
               dseCode: '',
               cardSelect: '',
               surrogate: '',
@@ -509,10 +519,10 @@ const handleSubmit=async (event)=>{
               otherAcc: '',
               remark: ''
             })
-           
-          }
+            
+            
         }
-         toast.success('Your Form is Successfully Submitted to Mirshad',{
+         toast.success(`Your Form is Successfully Submitted to Mirshad !!! `,{
           position:'top-center'
           })
   
@@ -529,6 +539,7 @@ const handleSubmit=async (event)=>{
   }
 
 }
+
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
     <div className="border rounded-lg shadow-lg p-8 bg-white">
@@ -541,6 +552,7 @@ const handleSubmit=async (event)=>{
           </p>
             <DatePicker className="mt-4" selected={new Date(formData.date)} onChange={handleDateChanged}/>
             <div div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+           
             <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                 Executive Name
@@ -554,9 +566,8 @@ const handleSubmit=async (event)=>{
                     id="exeName"
                     value={formData.exeName}
                     onChange={handleInputChange}
-                    autoComplete="exeName"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
+                    placeholder="Executive Name"
                     required
                   />
                 </div>
@@ -576,7 +587,7 @@ const handleSubmit=async (event)=>{
                     value={formData.dseCode}
                     onChange={handleInputChange}
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="mIRSHAD ALI"
+                    placeholder="Dse-Code"
                     required
                   />
                 </div>
@@ -594,7 +605,6 @@ const handleSubmit=async (event)=>{
                     name="cardSelect"
                     value={formData.cardSelect}
                     onChange={handleInputChange}
-                    autoComplete="cardSelect"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                      {selectcard.map((type)=>(
@@ -621,7 +631,6 @@ const handleSubmit=async (event)=>{
                     name="surrogate"
                     value={formData.surrogate}
                     onChange={handleInputChange}
-                    autoComplete="surrogate"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                      {surrogate.map((choose)=>(
@@ -651,7 +660,6 @@ const handleSubmit=async (event)=>{
                     id="firstName"
                     value={formData.custName.firstName}
                     onChange={handleChange}
-                    autoComplete="firstName"
                     style={{ textTransform: 'uppercase' }} 
                     className="block flex-1 border-0 bg-transparent  py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="First Name"
@@ -773,7 +781,6 @@ const handleSubmit=async (event)=>{
                     name="maritalStatus"
                     value={formData.maritalStatus}
                     onChange={handleInputChange}
-                    autoComplete="maritalStatus"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     
                     >
@@ -819,7 +826,6 @@ const handleSubmit=async (event)=>{
                     name="qualification"
                     value={formData.qualification}
                     onChange={handleInputChange}
-                    autoComplete="qualification"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     required
                     >
@@ -867,7 +873,6 @@ const handleSubmit=async (event)=>{
                     id="panNumber"
                     value={formData.panNumber}
                     onChange={handleInputChange}
-                    autoComplete="panNumber"
                     className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="Etpk1043q"
                   />
@@ -910,7 +915,6 @@ const handleSubmit=async (event)=>{
                             id="altMobileNumber"
                             value={formData.altMobileNumber}
                             onChange={handleInputChange}
-                            autoComplete="altMobileNumber"
                             className="block flex-1 border-0 bg-transparent text-transform: uppercase py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder="alternative number"
                            
@@ -1358,7 +1362,10 @@ const handleSubmit=async (event)=>{
                       Save
                     </button>
                 </div>
+
             </div>
+          
+
      </div>
      </div>
     </div>
