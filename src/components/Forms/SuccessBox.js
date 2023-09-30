@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+
 
 
 const SuccessBox = ({ applicationNumber,onClose }) => {
